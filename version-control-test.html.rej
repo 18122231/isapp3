@@ -1,0 +1,9 @@
+diff a/version-control-test.html b/version-control-test.html	(rejected hunks)
+@@ -21,7 +21,6 @@
+     </ul>
+     <h2>かぐ</h2>
+     <ul>
+-        <li>たんす</li>
+         <li>とだな</li>
+         <li>いす</li>
+     </ul>
