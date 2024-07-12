@@ -14,12 +14,19 @@
                 var objects = await osql.connect(sql);
                 console.log(objects);
                 
-                var html = '<ul>';
+                var html = '<table border="1">';
+                html += '<thead><tr><th>Artist</th><th>Song Title</th></tr></thead>';
+                html += '<tbody>';
                 for (var i = 0; i < objects.length; i++) {
                     var object = objects[i];
-                    html += '<li>' + object.artist + ', ' + object.songtitle  + '</li>';
+                    html += '<tr>';
+                    html += '<td>' + object.artist + '</td>';
+                    html += '<td>' + object.songtitle + '</td>';
+                    html += '</tr>';
                 }
-                html += '</ul>';
+                html += '</tbody></table>';
+
+                // 結果を表示する
                 document.getElementById('result').innerHTML = html;
 
             } catch (error) {
