@@ -1,6 +1,40 @@
+<!DOCTYPE html>
 <html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./main.css">
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+    <script>
+        osql.requireLogin(); // すべてのページに入れる。google認証をして、osql.connect()や、osql.getMe()を使えるようにしてくれる。
+
+        async function doSelect() {
+            try {
+                var sql = `select * from oniatama where Categry="悲しい";`;
+                var objects = await osql.connect(sql);
+                console.log(objects);
+                
+                var html = '<ul>';
+                for (var i = 0; i < objects.length; i++) {
+                    var object = objects[i];
+                    html += '<li>' + object.artist + ', ' + object.songtitle  + '</li>';
+                }
+                html += '</ul>';
+                document.getElementById('result').innerHTML = html;
+
+            } catch (error) {
+
+            }
+        }
+    </script>
+
     <body>
         <a href="https://www.youtube.com/watch?v=y1KqtVpmh1s">西野カナ</a>
         <a href="https://www.youtube.com/watch?v=PjGbnPYwt1g">湘南乃風</a>
+        <li>曲のデータベースだす</li>
+        <li>URL乗っける</li>
+        <li>roomに遷移</li>
+        <button onclick="doSelect()">Execute SQL</button>
+        <div id="result"></div>
     </body>
 </html>
