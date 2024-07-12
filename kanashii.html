@@ -1,6 +1,40 @@
+<!DOCTYPE html>
 <html>
-    <body>
-        西野カナ<a href="https://www.youtube.com/watch?v=y1KqtVpmh1s"></a>
-        湘南乃風<a href="https://www.youtube.com/watch?v=PjGbnPYwt1g"></a>
-    </body>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./main.css">
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+    <script>
+        osql.requireLogin(); // すべてのページに入れる。google認証をして、osql.connect()や、osql.getMe()を使えるようにしてくれる。
+
+        async function doSelect() {
+            try {
+                var sql = `select * from oniatama where Categry="悲しい";`;
+                var objects = await osql.connect(sql);
+                console.log(objects);
+                
+                var html = '<ul>';
+                for (var i = 0; i < objects.length; i++) {
+                    var object = objects[i];
+                    html += '<li>' + object.artist + ', ' + object.songtitle  + '</li>';
+                }
+                html += '</ul>';
+                document.getElementById('result').innerHTML = html;
+
+            } catch (error) {
+                console.error("SQL接続中のエラー:", error);
+                document.getElementById('result').innerHTML = 'エラーが発生しました';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button onclick="doSelect()">表示</button>
+    <div id="result"></div>
+    <div>
+    西野カナ<a href="https://www.youtube.com/watch?v=y1KqtVpmh1s"></a>
+    湘南乃風<a href="https://www.youtube.com/watch?v=PjGbnPYwt1g"></a>
+    </div>
+</body>
 </html>
