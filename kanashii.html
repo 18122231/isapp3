@@ -23,18 +23,18 @@
                 document.getElementById('result').innerHTML = html;
 
             } catch (error) {
-                console.error("SQL接続中のエラー:", error);
-                document.getElementById('result').innerHTML = 'エラーが発生しました';
+
             }
         }
     </script>
-</head>
-<body>
-    <button onclick="doSelect()">表示</button>
-    <div id="result"></div>
-    <div>
-    西野カナ<a href="https://www.youtube.com/watch?v=y1KqtVpmh1s"></a>
-    湘南乃風<a href="https://www.youtube.com/watch?v=PjGbnPYwt1g"></a>
-    </div>
-</body>
+
+    <body>
+        <a href="https://www.youtube.com/watch?v=y1KqtVpmh1s">西野カナ</a>
+        <a href="https://www.youtube.com/watch?v=PjGbnPYwt1g">湘南乃風</a>
+        <li>曲のデータベースだす</li>
+        <li>URL乗っける</li>
+        <li>roomに遷移</li>
+        <button onclick="doSelect()">Execute SQL</button>
+        <div id="result"></div>
+    </body>
 </html>
