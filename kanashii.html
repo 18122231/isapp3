@@ -5,36 +5,76 @@
     <link rel="stylesheet" href="./main.css">
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/osql.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 16px;
+            padding: 16px;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.02);
+        }
+        .card h2 {
+            margin: 0 0 16px;
+            font-size: 24px;
+        }
+        .card p {
+            margin: 0 0 8px;
+        }
+        .card a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .card a:hover {
+            text-decoration: underline;
+        }
+    </style>
     <script>
-        osql.requireLogin(); // すべてのページに入れる。google認証をして、osql.connect()や、osql.getMe()を使えるようにしてくれる。
-
+        osql.requireLogin(); 
         async function doSelect() {
             try {
-                var sql = `select * from oniatama where Categry="悲しい";`;
+                var sql = `select * from Oniatama where Categry="悲しい";`;
                 var objects = await osql.connect(sql);
                 console.log(objects);
                 
-                var html = '<ul>';
+                // URL情報を追加
+                objects[0].url = "./marigorudo_room.html";
+                objects[1].url = "./hitorigotu_room.html";
+                
+                var html = '';
                 for (var i = 0; i < objects.length; i++) {
                     var object = objects[i];
-                    html += '<li>' + object.artist + ', ' + object.songtitle  + '</li>';
+                    html += '<div class="card">';
+                    html += '<h2>' + object.songtitle + '</h2>';
+                    html += '<p>Song artist: ' + object.artist + '</p>';
+                    html += '<p>Song URL: <a href="' + object.URL + '" target="_blank">' + object.URL + '</a></p>';
+                    html += '<p>Chat room: <a href="' + object.url + '" target="_blank">Chat room</a></p>';
+                    html += '</div>';
                 }
-                html += '</ul>';
+
+                // 結果を表示する
                 document.getElementById('result').innerHTML = html;
 
             } catch (error) {
-
+                console.error("SQL接続中のエラー:", error);
+                document.getElementById('result').innerHTML = 'エラーが発生しました';
             }
         }
     </script>
-
-    <body>
-        <a href="https://www.youtube.com/watch?v=y1KqtVpmh1s">西野カナ</a>
-        <a href="https://www.youtube.com/watch?v=PjGbnPYwt1g">湘南乃風</a>
-        <li>曲のデータベースだす</li>
-        <li>URL乗っける</li>
-        <li>roomに遷移</li>
-        <button onclick="doSelect()">Execute SQL</button>
-        <div id="result"></div>
-    </body>
+</head>
+<body>
+    <button onclick="doSelect()">表示</button>
+    <div id="result"></div>
+</body>
 </html>

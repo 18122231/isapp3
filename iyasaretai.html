@@ -41,25 +41,25 @@
         }
     </style>
     <script>
-        osql.requireLogin(); // すべてのページに入れる。google認証をして、osql.connect()や、osql.getMe()を使えるようにしてくれる。
-
+        osql.requireLogin(); 
         async function doSelect() {
             try {
-                var sql = `select * from oniatama where Categry="癒されたい";`;
+                var sql = `select * from Oniatama where Categry="癒されたい";`;
                 var objects = await osql.connect(sql);
                 console.log(objects);
                 
                 // URL情報を追加
-                objects[0].url = "https://www.youtube.com/watch?v=y1KqtVpmh1s";
-                objects[1].url = "https://www.youtube.com/watch?v=PjGbnPYwt1g";
+                objects[0].url = "./marigorudo_room.html";
+                objects[1].url = "./hitorigotu_room.html";
                 
                 var html = '';
                 for (var i = 0; i < objects.length; i++) {
                     var object = objects[i];
                     html += '<div class="card">';
-                    html += '<h2>' + object.artist + '</h2>';
-                    html += '<p>Song Title: ' + object.songtitle + '</p>';
-                    html += '<a href="' + object.url + '" target="_blank">Listen on YouTube</a>';
+                    html += '<h2>' + object.songtitle + '</h2>';
+                    html += '<p>Song artist: ' + object.artist + '</p>';
+                    html += '<p>Song URL: <a href="' + object.URL + '" target="_blank">' + object.URL + '</a></p>';
+                    html += '<p>Chat room: <a href="' + object.url + '" target="_blank">Chat room</a></p>';
                     html += '</div>';
                 }
 
