@@ -5,6 +5,41 @@
     <link rel="stylesheet" href="./main.css">
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/osql.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 16px;
+            padding: 16px;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.02);
+        }
+        .card h2 {
+            margin: 0 0 16px;
+            font-size: 24px;
+        }
+        .card p {
+            margin: 0 0 8px;
+        }
+        .card a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .card a:hover {
+            text-decoration: underline;
+        }
+    </style>
     <script>
         osql.requireLogin(); // すべてのページに入れる。google認証をして、osql.connect()や、osql.getMe()を使えるようにしてくれる。
 
@@ -14,23 +49,26 @@
                 var objects = await osql.connect(sql);
                 console.log(objects);
                 
-                var html = '<table border="1">';
-                html += '<thead><tr><th>Artist</th><th>Song Title</th></tr></thead>';
-                html += '<tbody>';
+                // URL情報を追加
+                objects[0].url = "https://www.youtube.com/watch?v=y1KqtVpmh1s";
+                objects[1].url = "https://www.youtube.com/watch?v=PjGbnPYwt1g";
+                
+                var html = '';
                 for (var i = 0; i < objects.length; i++) {
                     var object = objects[i];
-                    html += '<tr>';
-                    html += '<td>' + object.artist + '</td>';
-                    html += '<td>' + object.songtitle + '</td>';
-                    html += '</tr>';
+                    html += '<div class="card">';
+                    html += '<h2>' + object.artist + '</h2>';
+                    html += '<p>Song Title: ' + object.songtitle + '</p>';
+                    html += '<a href="' + object.url + '" target="_blank">Listen on YouTube</a>';
+                    html += '</div>';
                 }
-                html += '</tbody></table>';
 
                 // 結果を表示する
                 document.getElementById('result').innerHTML = html;
 
             } catch (error) {
-
+                console.error("SQL接続中のエラー:", error);
+                document.getElementById('result').innerHTML = 'エラーが発生しました';
             }
         }
     </script>
@@ -40,4 +78,3 @@
     <div id="result"></div>
 </body>
 </html>
-
