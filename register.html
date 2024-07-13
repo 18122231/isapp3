@@ -27,20 +27,104 @@
 
             document.getElementById('result').innerHTML = 'OK';
         }
+
+
     </script>
 
 </head>
 
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    h1 {
+        color: #59998d;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+    input[type="textfield"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #59998d;
+        color: white;
+        padding: 10px 20px;
+        margin: 20px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+    }
+
+    .button2 {
+        background-color:  white;
+        color: #59998d;
+        padding: 10px 20px;
+        margin: 20px 0;
+        border: 2px solid #59998d;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+    }
+
+    button:hover {
+        background-color: #39796d;
+    }
+
+    .button2:hover{
+        background-color: #c0c0c0;
+    }
+
+    #result {
+        margin-top: 20px;
+        font-size: 1.2em;
+        color: #59998d;
+    }
+
+    .container {
+        background: white;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+    }
+
+    label {
+        display: block;
+        margin: 10px 0 5px;
+    }
+</style>
+
 <body>
-    <h1>User登録</h1>
-    userid:<input id="tf1" value="" type="textfield">
-    <br>
-    password:<input id="tf2" value="" type="password">(公開されますので真面目なパスワードは入れないでください．)
-    <br>
-    name:<input id="tf3" value="" type="textfield">
-    <button onclick="button1Pressed()">登録</button>
-    <br>
-    <p id="result"></p>
+    <div class="container">
+        <h1>User登録</h1>
+        <label for="tf1">userid:</label>
+        <input id="tf1" value="" type="textfield">
+        <label for="tf2">password:</label>
+        <input id="tf2" value="" type="password">(公開されますので真面目なパスワードは入れないでください．)
+        <label for="tf3">name:</label>
+        <input id="tf3" value="" type="textfield">
+        <button onclick="button1Pressed()">登録</button>
+        <p id="result"></p>
+
+    </div>
 </body>
 
 </html>
