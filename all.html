@@ -64,14 +64,14 @@
                 var object = objects[i];
                 var backgroundColor;
 
-                // 背景色を設定
-                if (i < 2) {
-                    backgroundColor = 'rgba(120, 190, 150, 1.0)';
-                } else if (i < 4) {
-                    backgroundColor = 'rgba(0, 0, 128, 0.2)';
-                } else {
-                    backgroundColor = 'rgba(190, 120, 150, 1.0)';
-                }
+            
+                    if (object.categry === '癒されたい') {
+                        backgroundColor = 'rgba(120, 190, 150, 1.0)';
+                    } else if (object.categry === '悲しい') {
+                        backgroundColor = 'rgba(0, 0, 128, 0.2)';
+                    } else {
+                        backgroundColor = 'rgba(190, 120, 150, 1.0)';
+                    }
 
                 html += '<div class="card" style="background-color:' + backgroundColor + ';">';
                 html += '<h4>' + object.categry + '</h4>';
@@ -91,12 +91,12 @@
             }
         }
 
-
+        window.onload = doSelect;
     </script>
 
     <body>
 
-        <button onclick="doSelect()">全曲表示</button>
+        
         <div id="result"></div>
     </body>
 </html>
