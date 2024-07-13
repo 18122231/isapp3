@@ -73,10 +73,12 @@
                 document.getElementById('result').innerHTML = 'エラーが発生しました';
             }
         }
+
+        window.onload = doSelect;
     </script>
 </head>
 <body>
-    <button onclick="doSelect()">表示</button>
+   
     <div id="result"></div>
 </body>
 </html>
