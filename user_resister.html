@@ -11,8 +11,7 @@
     <script type="text/javascript" src="lib/osql.js"></script>
 
     <script>
-        osql.requireLogin();//すべてのページに入れる．google認証をして，osql.connect()や，osql.getMe()を使えるようにしてくれる．
-
+        
         async function buttonPressed() {
             var userid = document.getElementById('tf1').value;
             var password = document.getElementById('tf2').value;
@@ -129,9 +128,10 @@
         <button onclick="buttonPressed()">ログイン</button>
         <p id="result"></p>
         <button class="button2" onclick="location.href='./register.html'">新規登録の方はこちら</button>
+        <button class="button2" onclick="location.href='./kanri.html'">管理者ページ</button>
 
     </div>
-
+   
 </body>
 
 </html>
