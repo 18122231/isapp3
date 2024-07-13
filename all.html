@@ -59,6 +59,9 @@
                 objects[4].url = "./bling-bang-bang-born_room.html";
                 objects[5].url = "./abarero_room.html";
 
+
+                objects.sort((a, b) => a.categry.localeCompare(b.categry));
+
                 var html = '';
                 for (var i = 0; i < objects.length; i++) {
                 var object = objects[i];
