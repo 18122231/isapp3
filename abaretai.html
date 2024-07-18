@@ -44,6 +44,7 @@
         osql.requireLogin(); 
         async function doSelect() {
             try {
+<<<<<<< HEAD
                 var sql = `select * from Oniatama where Categry="暴れたい" order by songtitle asc;`;
                 var objects = await osql.connect(sql);
                 console.log(objects);
@@ -57,6 +58,17 @@
                 
                 var html = '';
                 
+=======
+                var sql = `select * from Oniatama where Categry="暴れたい"order by songtitle asc;`;
+                var objects = await osql.connect(sql);
+                console.log(objects);
+                
+                // URL情報を追加
+                objects[0].url = "room/aitakute_room.html";
+                objects[1].url = "room/suirenka_room.html";
+                
+                var html = '';
+>>>>>>> origin/main
                 for (var i = 0; i < objects.length; i++) {
                     
                     var object = objects[i];
@@ -76,7 +88,10 @@
                 document.getElementById('result').innerHTML = 'エラーが発生しました';
             }
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
         window.onload = doSelect;
     </script>
 </head>
@@ -86,6 +101,10 @@
         <option value="title">曲名のあいうえお順</option>
         <option value="votes">人気順</option>
     </select>
+<<<<<<< HEAD
+=======
+    
+>>>>>>> origin/main
     <div id="result"></div>
 </body>
 </html>
