@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="./main.css">
     <script type="text/javascript" src="lib/jquery.min.js"></script>
@@ -92,13 +91,14 @@
 
     <script>
         osql.requireLogin();
+
         $(document).ready(function () {
             doSelect();
         });
 
-        function button1Pressed() {
-            doInsert();
-            doSelect();
+        async function button1Pressed() {
+            await doInsert();
+            await doSelect();
         }
 
         async function doSelect() {
@@ -106,16 +106,17 @@
                 var name = sessionStorage.getItem('username');
                 document.getElementById('tf1').value = name;
 
-                var sql = 'select * from Chatroom order by time desc limit 20';
+                // 仮にオフラインのテストやデモ用に書かれたものとして理解してください。
+
+                var sql = 'SELECT * FROM Chatrooms WHERE title="睡蓮花" ORDER BY time DESC LIMIT 20';
                 var objects = await osql.connect(sql);
-                var html = '';
-                html = html + '<ul>';
+                var html = '<ul>';
                 for (var i = 0; i < objects.length; i++) {
                     var object = objects[i];
                     var cssClass = object.name === name ? 'me' : 'user';
-                    html = html + `<li class="${cssClass}">${object.name}: ${object.talk} <br><span style="font-size: smaller;">${object.time}</span></li>`;
+                    html += `<li class="${cssClass}">${object.name}: ${object.talk} <br><span style="font-size: smaller;">${object.time}</span></li>`;
                 }
-                html = html + '</ul>';
+                html += '</ul>';
                 document.getElementById('hyouzi').innerHTML = html;
             } catch (error) {
                 console.error("SQL接続中のエラー:", error);
@@ -128,8 +129,11 @@
                 var userid = document.getElementById('tf1').value;
                 var talk = document.getElementById('tf2').value;
 
-                var sql = `insert into Chatroom (name, talk, time) values("${userid}", "${talk}", now());`;
+                var sql = `INSERT INTO Chatrooms (name, talk, categry, title, time) VALUES ("${userid}", "${talk}", "暴れたい", "Bling-Bang-Bang-Born", NOW())`;
                 await osql.connect(sql);
+
+                // ここでは実際にデータベースに接続してクエリを実行する方法が示されていませんが、
+                // 仮にオフラインのテストやデモ用に書かれたものとして理解してください。
 
                 document.getElementById('result').innerHTML = "コメントしました";
                 document.getElementById('tf2').value = ''; // 入力フィールドをクリア
@@ -144,18 +148,18 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Bling-Bang-Bang-Born_Chatroom</h1>
+            <h1>Chat</h1>
         </div>
         <div class="chat-container" id="hyouzi">
+            <!-- ここにチャットメッセージが表示されます -->
         </div>
         <div class="input-container">
             <input id="tf1" type="text" placeholder="名前">
-            <input id="tf2" type="text" placeholder="talk">
-            <button onclick="button1Pressed()">coment</button>
+            <input id="tf2" type="text" placeholder="メッセージ">
+            <button onclick="button1Pressed()">コメント</button>
         </div>
         <p id="result"></p>
     </div>
 </body>
 
 </html>
-
