@@ -10,8 +10,7 @@
         <script type="text/javascript" src="lib/osql.js"></script>
 
     <script>
-        osql.requireLogin();//すべてのページに入れる．google認証をして，osql.connect()や，osql.getMe()を使えるようにしてくれる．
-
+       
         function button1Pressed() {
             execInsert();
         }
@@ -24,6 +23,8 @@
             var sql = `insert into Users (id, password, name) values("${userid}", "${password}", "${username}");`;
             var objects = await osql.connect(sql);
             console.log(objects);
+           
+            // sessionStorage.setItem('username', objects[0].username);
 
             document.getElementById('result').innerHTML = 'OK';
         }
