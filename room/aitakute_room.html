@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./main.css">
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 60%;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chat-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chat-container ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .chat-container li {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .chat-container .user {
+            background-color: #d1f2eb;
+            align-self: flex-start;
+            margin-left: 10px;
+        }
+
+        .chat-container .me {
+            background-color: #f1c40f;
+            align-self: flex-end;
+            margin-right: 10px;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .input-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .input-container button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+
+    <script>
+        osql.requireLogin();
+        $(document).ready(function () {
+            doSelect();
+        });
+
+        function button1Pressed() {
+            doInsert();
+            doSelect();
+        }
+
+        async function doSelect() {
+            try {
+                var name = sessionStorage.getItem('username');
+                document.getElementById('tf1').value = name;
+
+                var sql = 'select * from Chatroom order by time desc limit 20';
+                var objects = await osql.connect(sql);
+                var html = '';
+                html = html + '<ul>';
+                for (var i = 0; i < objects.length; i++) {
+                    var object = objects[i];
+                    var cssClass = object.name === name ? 'me' : 'user';
+                    html = html + `<li class="${cssClass}">${object.name}: ${object.talk} <br><span style="font-size: smaller;">${object.time}</span></li>`;
+                }
+                html = html + '</ul>';
+                document.getElementById('hyouzi').innerHTML = html;
+            } catch (error) {
+                console.error("SQL接続中のエラー:", error);
+                document.getElementById('hyouzi').innerHTML = 'エラーが発生しました: ' + error.message;
+            }
+        }
+
+        async function doInsert() {
+            try {
+                var userid = document.getElementById('tf1').value;
+                var talk = document.getElementById('tf2').value;
+
+                var sql = `insert into Chatroom (name, talk, time) values("${userid}", "${talk}", now());`;
+                await osql.connect(sql);
+
+                document.getElementById('result').innerHTML = "コメントしました";
+                document.getElementById('tf2').value = ''; // 入力フィールドをクリア
+            } catch (error) {
+                console.error("SQL接続中のエラー:", error);
+                document.getElementById('result').innerHTML = 'エラーが発生しました: ' + error.message;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>会いたくて_Chatroom</h1>
+        </div>
+        <div class="chat-container" id="hyouzi">
+        </div>
+        <div class="input-container">
+            <input id="tf1" type="text" placeholder="名前">
+            <input id="tf2" type="text" placeholder="talk">
+            <button onclick="button1Pressed()">coment</button>
+        </div>
+        <p id="result"></p>
+    </div>
+</body>
+
+</html>
+
