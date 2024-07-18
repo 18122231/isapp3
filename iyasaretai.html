@@ -42,29 +42,41 @@
     </style>
     <script>
         osql.requireLogin(); 
+
         async function doSelect() {
             try {
+                // セッションストレージからusernameを取得
+                var username = sessionStorage.getItem('username');
+                if (!username) {
+                    throw new Error('Username not found in sessionStorage');
+                }
+
                 var sql = `select * from Oniatama where Categry="癒されたい" order by songtitle asc;`;
                 var objects = await osql.connect(sql);
                 console.log(objects);
-                // link.href = "update.html?name=" + encodeURIComponent(name);
-                // URL情報を追加
-                objects[0].url = "room/ikkyu_room.html?name =" +encodeURIComponent(1) ;
-                // objects[1].url = "room/hitorigotu_room.html?name =" + 2 ;
-                // objects[2].url = "room/marigorudo_room.html?name =" + 3 ;
-                objects[1].url = "room/ikkyu_room.html?name =" + 3 ;
-                objects[2].url = "room/ikkyu_room.html?name =" + 4 ;
                 
                 var html = '';
                 
                 for (var i = 0; i < objects.length; i++) {
-                    
                     var object = objects[i];
+                    var chatRoomUrl = '';
+
+                    // オブジェクトのインデックスに応じて異なるURLを設定
+                    if (i === 0) {
+                        chatRoomUrl = "room/ikkyu_room.html?name=" + encodeURIComponent(username);
+                    } else if (i === 1) {
+                        chatRoomUrl = "room/hitorigotu_room.html?name=" + encodeURIComponent(username);
+                    } else if (i === 2) {
+                        chatRoomUrl = "room/marigorudo_room.html?name=" + encodeURIComponent(username);
+                    } else {
+                        chatRoomUrl = "room/default_room.html?name=" + encodeURIComponent(username); // 他のケースのデフォルトURL
+                    }
+                    
                     html += '<div class="card">';
                     html += '<h2>' + object.songtitle + '</h2>';
                     html += '<p>Song artist: ' + object.artist + '</p>';
                     html += '<p>Song URL: <a href="' + object.URL + '" target="_blank">' + object.URL + '</a></p>';
-                    html += '<p>Chat room: <a href="' + object.url + '" target="_blank">Chat room</a></p>';
+                    html += '<p>Chat room: <a href="' + chatRoomUrl + '" target="_blank">Chat room</a></p>';
                     html += '</div>';
                 }
 

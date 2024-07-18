@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="./main.css">
@@ -88,11 +87,20 @@
             background-color: #2980b9;
         }
     </style>
-
     <script>
         osql.requireLogin();
 
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
         $(document).ready(function () {
+            var username = getQueryParam('name');
+            if (username) {
+                sessionStorage.setItem('username', username);
+                document.getElementById('tf1').value = username;
+            }
             doSelect();
         });
 
@@ -106,8 +114,7 @@
                 var name = sessionStorage.getItem('username');
                 document.getElementById('tf1').value = name;
 
-                // 仮にオフラインのテストやデモ用に書かれたものとして理解してください。
-
+                
                 var sql = 'SELECT * FROM Chatrooms WHERE title="とんちんかんちん一休さん" ORDER BY time DESC LIMIT 20';
                 var objects = await osql.connect(sql);
                 var html = '<ul>';
@@ -132,8 +139,7 @@
                 var sql = `INSERT INTO Chatrooms (name, talk, categry, title, time) VALUES ("${userid}", "${talk}", "癒されたい", "とんちんかんちん一休さん", NOW())`;
                 await osql.connect(sql);
 
-                // ここでは実際にデータベースに接続してクエリを実行する方法が示されていませんが、
-                // 仮にオフラインのテストやデモ用に書かれたものとして理解してください。
+               
 
                 document.getElementById('result').innerHTML = "コメントしました";
                 document.getElementById('tf2').value = ''; // 入力フィールドをクリア
@@ -161,5 +167,4 @@
         <p id="result"></p>
     </div>
 </body>
-
 </html>
