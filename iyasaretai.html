@@ -41,37 +41,33 @@
         }
     </style>
     <script>
-        osql.requireLogin(); 
+        osql.requireLogin();
 
         async function doSelect() {
             try {
-                // セッションストレージからusernameを取得
-                var username = sessionStorage.getItem('username');
-                if (!username) {
-                    throw new Error('Username not found in sessionStorage');
-                }
-
-                var sql = `select * from Oniatama where Categry="癒されたい" order by songtitle asc;`;
+                var username = sessionStorage.getItem('username') || '';
+                var sql = `select songtitle, artist, URL from Oniatama where Categry="癒されたい" order by songtitle asc;`;
                 var objects = await osql.connect(sql);
                 console.log(objects);
-                
+
                 var html = '';
-                
+
                 for (var i = 0; i < objects.length; i++) {
                     var object = objects[i];
                     var chatRoomUrl = '';
 
-                    // オブジェクトのインデックスに応じて異なるURLを設定
+                    var encodedSongTitle = encodeURIComponent(object.songtitle);
+
                     if (i === 0) {
-                        chatRoomUrl = "room/ikkyu_room.html?name=" + encodeURIComponent(username);
+                        chatRoomUrl = `room/ikkyu_room.html?name=${encodeURIComponent(username)}&songtitle=${encodedSongTitle}`;
                     } else if (i === 1) {
-                        chatRoomUrl = "room/hitorigotu_room.html?name=" + encodeURIComponent(username);
+                        chatRoomUrl = `room/hitorigotu_room.html?name=${encodeURIComponent(username)}&songtitle=${encodedSongTitle}`;
                     } else if (i === 2) {
-                        chatRoomUrl = "room/marigorudo_room.html?name=" + encodeURIComponent(username);
+                        chatRoomUrl = `room/marigorudo_room.html?name=${encodeURIComponent(username)}&songtitle=${encodedSongTitle}`;
                     } else {
-                        chatRoomUrl = "room/default_room.html?name=" + encodeURIComponent(username); // 他のケースのデフォルトURL
+                        chatRoomUrl = `room/default_room.html?name=${encodeURIComponent(username)}&songtitle=${encodedSongTitle}`; // 他のケースのデフォルトURL
                     }
-                    
+
                     html += '<div class="card">';
                     html += '<h2>' + object.songtitle + '</h2>';
                     html += '<p>Song artist: ' + object.artist + '</p>';
@@ -80,7 +76,6 @@
                     html += '</div>';
                 }
 
-                // 結果を表示する
                 document.getElementById('result').innerHTML = html;
 
             } catch (error) {
@@ -94,7 +89,7 @@
 </head>
 <body>
     <label for="sortSelect">並べ替え:</label>
-    <select id="sortSelect" onchange="sortCards()">
+    <select id="sortSelect" onchange="doSelect()">
         <option value="title">曲名のあいうえお順</option>
         <option value="votes">人気順</option>
     </select>
