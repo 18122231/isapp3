@@ -92,13 +92,24 @@
 
     <script>
         osql.requireLogin();
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
         $(document).ready(function () {
+            var username = getQueryParam('name');
+            if (username) {
+                sessionStorage.setItem('username', username);
+                document.getElementById('tf1').value = username;
+            }
             doSelect();
+    
         });
 
-        function button1Pressed() {
-            doInsert();
-            doSelect();
+        async function button1Pressed() {
+            await doInsert();
+            await doSelect();
         }
 
         async function doSelect() {
@@ -106,16 +117,16 @@
                 var name = sessionStorage.getItem('username');
                 document.getElementById('tf1').value = name;
 
-                var sql = 'select * from Chatrooms WHERE title="ABARERO" order by time desc limit 20';
+                
+                var sql = 'SELECT * FROM Chatrooms WHERE title="ABARERO" ORDER BY time DESC LIMIT 20';
                 var objects = await osql.connect(sql);
-                var html = '';
-                html = html + '<ul>';
+                var html = '<ul>';
                 for (var i = 0; i < objects.length; i++) {
                     var object = objects[i];
                     var cssClass = object.name === name ? 'me' : 'user';
-                    html = html + `<li class="${cssClass}">${object.name}: ${object.talk} <br><span style="font-size: smaller;">${object.time}</span></li>`;
+                    html += `<li class="${cssClass}">${object.name}: ${object.talk} <br><span style="font-size: smaller;">${object.time}</span></li>`;
                 }
-                html = html + '</ul>';
+                html += '</ul>';
                 document.getElementById('hyouzi').innerHTML = html;
             } catch (error) {
                 console.error("SQL接続中のエラー:", error);
@@ -128,8 +139,10 @@
                 var userid = document.getElementById('tf1').value;
                 var talk = document.getElementById('tf2').value;
 
-                var sql = `insert into Chatrooms (name, talk, categry, title, time) values("${userid}", "${talk}", "暴れたい", "ABARERO", now());`;
+                var sql = `INSERT INTO Chatrooms (name, talk, categry, title, time) VALUES ("${userid}", "${talk}", "暴れたい", "ABARERO", NOW())`;
                 await osql.connect(sql);
+
+               
 
                 document.getElementById('result').innerHTML = "コメントしました";
                 document.getElementById('tf2').value = ''; // 入力フィールドをクリア

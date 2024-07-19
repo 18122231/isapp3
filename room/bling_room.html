@@ -92,8 +92,19 @@
     <script>
         osql.requireLogin();
 
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
         $(document).ready(function () {
+            var username = getQueryParam('name');
+            if (username) {
+                sessionStorage.setItem('username', username);
+                document.getElementById('tf1').value = username;
+            }
             doSelect();
+    
         });
 
         async function button1Pressed() {
@@ -106,8 +117,7 @@
                 var name = sessionStorage.getItem('username');
                 document.getElementById('tf1').value = name;
 
-                // 仮にオフラインのテストやデモ用に書かれたものとして理解してください。
-
+                
                 var sql = 'SELECT * FROM Chatrooms WHERE title="Bling-Bang-Bang-Born" ORDER BY time DESC LIMIT 20';
                 var objects = await osql.connect(sql);
                 var html = '<ul>';
@@ -132,8 +142,7 @@
                 var sql = `INSERT INTO Chatrooms (name, talk, categry, title, time) VALUES ("${userid}", "${talk}", "暴れたい", "Bling-Bang-Bang-Born", NOW())`;
                 await osql.connect(sql);
 
-                // ここでは実際にデータベースに接続してクエリを実行する方法が示されていませんが、
-                // 仮にオフラインのテストやデモ用に書かれたものとして理解してください。
+               
 
                 document.getElementById('result').innerHTML = "コメントしました";
                 document.getElementById('tf2').value = ''; // 入力フィールドをクリア
