@@ -117,7 +117,7 @@
                 document.getElementById('tf1').value = name;
 
                 
-                var sql = 'SELECT * FROM Chatrooms WHERE title="会いたくて　会いたくて" ORDER BY time DESC LIMIT 20';
+                var sql = 'SELECT * FROM Chatrooms WHERE title="会会いたくて　会いたくて" ORDER BY time DESC LIMIT 20';
                 var objects = await osql.connect(sql);
                 var html = '<ul>';
                 for (var i = 0; i < objects.length; i++) {
